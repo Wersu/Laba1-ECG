@@ -13,6 +13,7 @@ public:
         mScale(glm::vec3(1.0f, 1.0f, 1.0f)),
         mWorldPos(glm::vec3(0.0f, 0.0f, 0.0f)),
         mRotateInfo(glm::vec3(0.0f, 0.0f, 0.0f)),
+        mPersProj(),    
         mTransformation(glm::mat4()) {}
     void Scale(float ScaleX, float ScaleY, float ScaleZ)
     {
@@ -32,17 +33,33 @@ public:
         mRotateInfo[1] = RotateY;
         mRotateInfo[2] = RotateZ;
     }
+    void perspectiveProj(float FOV, float width, float height, float zNear, float zFar) {
+        mPersProj.FOV = FOV;
+        mPersProj.width = width;
+        mPersProj.height = height;
+        mPersProj.zNear = zNear;
+        mPersProj.zFar = zFar;
+    }
     const glm::mat4* getTransformation();
 
 private:
-    /*void InitScaleTrans(glm::mat4& m) const;
+    void InitScaleTrans(glm::mat4& m) const;
     void InitRotateTrans(glm::mat4& m) const;
-    void InitTranslationTrans(glm::mat4& m) const;*/
+    void InitTranslationTrans(glm::mat4& m) const;
+    void InitPerspectiveProj(glm::mat4& m) const;
 
     glm::vec3 mScale;
     glm::vec3 mWorldPos;
     glm::vec3 mRotateInfo;
     glm::mat4 mTransformation;
+        
+    struct {
+        float FOV;
+        float width;
+        float height;
+        float zNear;
+        float zFar;
+    } mPersProj;
 };
 
 

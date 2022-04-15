@@ -8,6 +8,7 @@
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/glm.hpp>
 #include <math.h>
+#include "pipeline.h"
 using namespace glm;
 
 
@@ -45,6 +46,14 @@ static void RenderSceneCB()
 
     Scale += 0.001f;
 
+    Pipeline p;
+    p.Scale(0.1f, 0.1f, 0.1f);
+    p.Rotate(0, Scale, 0);
+    p.WorldPos(0.0f, 0.0f, 100.0f);
+    p.perspectiveProj(90.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 10.0f, 10000.0f);
+
+    glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, (const GLfloat*)p.getTransformation());
+
     glm::mat4  World;
     glm::mat4  WorldX;
     
@@ -69,7 +78,7 @@ static void RenderSceneCB()
 
     World = WorldX * WorldZ * scale;
 
-    glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, &WorldX[0][0]);
+    /*glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, &WorldX[0][0]);*/
 
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -172,11 +181,10 @@ int main(int argc, char** argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(1024, 768);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow("Tutorial 06");
+    glutCreateWindow("Tutorial 12");
 
     InitializeGlutCallbacks();
 
-    // Must be done after glut is initialized!
     GLenum res = glewInit();
     if (res != GLEW_OK) {
         fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
