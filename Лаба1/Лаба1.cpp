@@ -8,6 +8,7 @@
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/glm.hpp>
 #include <math.h>
+#include "pipeline.h"
 using namespace glm;
 
 
@@ -44,6 +45,12 @@ static void RenderSceneCB()
     static float Scale = 0.0f;
 
     Scale += 0.001f;
+
+    Pipeline p;
+    p.Scale(sinf(Scale * 0.1f), sinf(Scale * 0.1f), sinf(Scale * 0.1f));
+    p.WorldPos(sinf(Scale), 0.0f, 0.0f);
+    p.Rotate(sinf(Scale) * 90.0f, sinf(Scale) * 90.0f, sinf(Scale) * 90.0f);
+    glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, (const GLfloat*)p.getTransformation());
 
     glm::mat4  World;
     glm::mat4  WorldX;
