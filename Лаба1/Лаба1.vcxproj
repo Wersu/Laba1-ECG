@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="Лаба1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="pipeline.h" />
     <ClInclude Include="pipline.h" />
   </ItemGroup>

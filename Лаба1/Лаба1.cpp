@@ -1,12 +1,21 @@
-﻿#include <stdio.h>
+﻿
+#include <stdio.h>
+
 #include <iostream>
+
 #include <string.h>
+
 #include <assert.h>
+
 #include <math.h>
+
 #include <GL/glew.h>
-#include <GL/freeglut.h>
-#include <glm/glm.hpp>
-#include "pipeline.h"
+#include "camera.cpp"
+
+//#include "pipeline.h"
+//#include <GL/freeglut.h>
+//#include <glm/glm.hpp>
+
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
 
@@ -15,6 +24,8 @@ using namespace glm;
 GLuint VBO;
 GLuint IBO;
 GLuint gWorldLocation;
+
+Camera GameCamera;
 
 static const char* pVS = "                                                          \n\
 #version 330                                                                        \n\
@@ -45,6 +56,7 @@ void main()                                                                     
 
 void RenderSceneCB()
 {
+
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	static float Scale = 0.0f;
@@ -59,7 +71,8 @@ void RenderSceneCB()
 	vec3 CameraPos(0.1f, 0.15f, -3.0f);
 	vec3 CameraTarget(0.02f, 0.0f, 1.0f);
 	vec3 CameraUp(0.0f, 1.0f, 0.0f);//Вектор вверх для простоты положительный Y
-	p.SetCamera(CameraPos, CameraTarget, CameraUp);
+	p.SetCamera(GameCamera.GetPos(), GameCamera.GetTarget(), GameCamera.GetUp());
+	//p.SetCamera(CameraPos, CameraTarget, CameraUp);
 
 	glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, (const GLfloat*)p.getTransformation());
 
@@ -75,10 +88,15 @@ void RenderSceneCB()
 	glutSwapBuffers();
 }
 
+static void SpecialKeyboardCB(int Key, int x, int y) {
+	GameCamera.OnKeyboard(Key);
+}
+
 static void InitializeGlutCallbacks()
 {
 	glutDisplayFunc(RenderSceneCB);
 	glutIdleFunc(RenderSceneCB);
+	glutSpecialFunc(SpecialKeyboardCB);
 }
 
 static void CreateVertexBuffer()
